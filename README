@@ -1,0 +1,38 @@
+This extension requires yifanlu's guilauncher to work. It is only tested a 
+bit with https://github.com/downloads/yifanlu/KindleLauncher/kindle_launcher_1.0.zip.
+Use at your own risk. 
+
+unrar this package, copy the whole collectionSync directory into kindle drive's 
+extentsions/ directory(available only after you install the launcher). Reboot.
+You should see a new menu in launcher->"generate collections". 
+
+Be careful!! Any existing collections will be deleted, new collections with be 
+created according to currrent contents on the drive:
+   a/b.txt
+   a/c/d.txt
+   a/c/e.txt
+=> a(1)
+   a-c(2)
+
+Happy Hacking.
+
+In Chinese:
+
+这个扩展依赖于yifanlu的guilauncher插件，先安装https://github.com/downloads/yifanlu/
+KindleLauncher/kindle_launcher_1.0.zip，然后把本安装包解压后得到的collectSync目录
+拷贝到kindle盘extensions目录下，重启，就会看到menu-launcher菜单下有新的选项"generate
+collections",选中后就会根据您的kindle目录下的内容生成分类。本脚本并没有充分测试，只是
+为了给老婆提供一个完美礼品的一个hack，不能保证在所有kindle touch正常工作，我不对任何
+风险负责。
+
+请注意，为了避免重复生成分类，生成分类之前现有分类都会被删除！根据documents目录下的内容，
+只要某个目录下有文件，就会生成相应分类，分类名由目录名生成，例如：
+   a/b.txt
+   a/c/d.txt
+   a/c/e.txt
+会生成：
+   a(1)   //分类a下有一个文件
+   a-c(2) //分类a-c下有两个文件
+
+Fuxin Zhang
+2012/1/10

@@ -1,0 +1,5 @@
+{
+	"items": [
+		{"name": "Generate collections", "priority": 1, "action": "sync_dir_collection.sh"}
+	]
+}
