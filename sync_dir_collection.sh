@@ -34,12 +34,12 @@ update_collection() {
    update_post_data_2=']}}],"type":"ChangeRequest","id":7}'
    echo "updating members for collection " $1 $2
    
-   dir="/mnt/us/documents/"`echo $1 | sed 's/-/\//g'`
+   dir="/mnt/us/documents/"`echo "$1" | sed 's/－/\//g'`
 
    ##be careful for file name with spaces!
   post_data=$update_post_data_prefix$2$update_post_data_1
   n=0
-  find $dir -maxdepth 1 -type f | while read f ; do
+  find "$dir" -maxdepth 1 -type f | while read f ; do
     sql="select p_uuid from Entries where p_location == '"$f"'";
     u=`sqlite3 /var/local/cc.db "$sql"`;
     if test $u; then  
@@ -60,20 +60,18 @@ update_collection() {
 }
 
 create_collections() {
-  rm -f /mnt/us/system/collections
-  touch /mnt/us/system/collections
 
-##find all dirs, remove prefix /mnt/us/documents/, replace '/' to '-', filter out .sdr files(used by kindle), empty lines, and /mnt/us/documents itself
-  find /mnt/us/documents -type d | sed "s/^\/mnt\/us\/documents\///g" | sed "s/\//-/g" | grep -v "\.sdr$" | \
-    grep -v "^$" | grep -v "\-mnt\-us\-documents" | while read dir; do
+##find all dirs, remove prefix /mnt/us/documents/, replace '/' to '－', filter out .sdr files(used by kindle), empty lines, and /mnt/us/documents itself
+  find /mnt/us/documents -type d | sed "s/^\/mnt\/us\/documents\///g" | sed "s/\//－/g" | grep -v "\.sdr$" | \
+    grep -v "^$" | grep -v "－mnt－us－documents" | while read dir; do
 
-    realdir="/mnt/us/documents/"`echo $dir | sed 's/-/\//g'`
-    filecount=`find $realdir -maxdepth 1 -type f | wc -l`
+    realdir="/mnt/us/documents/"`echo "$dir" | sed 's/－/\//g'`
+    filecount=`find "$realdir" -maxdepth 1 -type f | wc -l`
   
     ##echo $dir,$realdir,$filecount
     if [ $filecount -gt 0 ] ; then
-      insert_collection $dir
-      update_collection $dir $uuid
+      insert_collection "$dir"
+      update_collection "$dir" $uuid
     fi
   done
 }
