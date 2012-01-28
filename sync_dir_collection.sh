@@ -9,7 +9,7 @@ clear_existing_collections() {
   sql="select p_uuid from Entries where p_type== 'Collection'";
   sqlite3 /var/local/cc.db "$sql" | while read u; do
     post_data=$delete_post_prefix$u$delete_post_suffix
-    echo "Deleting collection $u" $post_data 
+#    echo "Deleting collection $u" $post_data 
     echo $post_data >> ./commands
 #    /usr/java/bin/cvm PerformPost change $post_data
   done
@@ -21,7 +21,7 @@ insert_collection() {
   insert_post_data_2=',"titles":[{"display":"';
   insert_post_data_3='","direction":"LTR","language":"en-US"}],"isVisibleInHome":true}}],"type":"ChangeRequest","id":2}';
   
-  echo "inserting collection" $1
+#  echo "inserting collection" $1
   uuid=`cat /proc/sys/kernel/random/uuid`
   post_data=$insert_post_data_prefix$uuid$insert_post_data_1`date +%s`$insert_post_data_2$1$insert_post_data_3;
     echo $post_data >> ./commands
@@ -32,7 +32,7 @@ update_collection() {
    update_post_data_prefix='{"commands":[{"update":{"type":"Collection","uuid":"'
    update_post_data_1='","members":['
    update_post_data_2=']}}],"type":"ChangeRequest","id":7}'
-   echo "updating members for collection " $1 $2
+#   echo "updating members for collection " $1 $2
    
    dir="/mnt/us/documents/"`echo "$1" | sed 's/－/\//g'`
 
@@ -54,7 +54,7 @@ update_collection() {
     echo $member_data > /tmp/member_data
   done 
   post_data=$post_data`cat /tmp/member_data`$update_post_data_2
-  echo "updating collection" $1 $post_data
+#  echo "updating collection" $1 $post_data
     echo $post_data >> ./commands
 #  /usr/java/bin/cvm PerformPost change $post_data
 }
@@ -76,7 +76,9 @@ create_collections() {
   done
 }
 
-### prevent screensaver
+### enter screensaver mode to tell user work start
+lipc-set-prop com.lab126.powerd preventScreenSaver 0
+lipc-set-prop com.lab126.powerd powerButton 1
 lipc-set-prop com.lab126.powerd preventScreenSaver 1
 
 cd /mnt/us/extensions/collectionSync
@@ -91,6 +93,10 @@ clear_existing_collections
 ### then find out all directories that have >=1 regular files
 ### create a collection and fill in items
 create_collections
+
+lipc-set-prop com.lab126.powerd preventScreenSaver 0
+lipc-set-prop com.lab126.powerd powerButton 1
+lipc-set-prop com.lab126.powerd preventScreenSaver 1
 
 /usr/java/bin/cvm PerformPostBatch
 #rm -f ./commands

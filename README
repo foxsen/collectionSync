@@ -14,25 +14,50 @@ created according to currrent contents on the drive:
 => a(1)
    a-c(2)
 
+The process might be quite slow if you have lots of books. To let you know a bit 
+about the progress, the plugin will first put kindle into screensaver mode until
+it finish generate all necessary commands(/mnt/us/extensions/collectionSync/commands
+file), then start to perform the real work(delete/insert/update collections, you can
+see my items and page numbers changing in this phase), at last it will enter screensaver
+mode again to tell you all work is done.
+
+Known limits:
+ 1, It uses Chinese character 'ï¼' to seperate directory hierarchy, if your directories
+contains such character, generation will (partly) fail.
+ 2, Kindle is slow at scanning books. After copying lots of books onto it, you should wait
+enough time for it to finish the generation of entries database items. Otherwise the script
+might fail due to database operation conflicts with system.
+
 Happy Hacking.
 
 In Chinese:
 
-Õâ¸öÀ©Õ¹ÒÀÀµÓÚyifanluµÄguilauncher²å¼ş£¬ÏÈ°²×°https://github.com/downloads/yifanlu/
-KindleLauncher/kindle_launcher_1.0.zip£¬È»ºó°Ñ±¾°²×°°ü½âÑ¹ºóµÃµ½µÄcollectSyncÄ¿Â¼
-¿½±´µ½kindleÅÌextensionsÄ¿Â¼ÏÂ£¬ÖØÆô£¬¾Í»á¿´µ½menu-launcher²Ëµ¥ÏÂÓĞĞÂµÄÑ¡Ïî"generate
-collections",Ñ¡ÖĞºó¾Í»á¸ù¾İÄúµÄkindleÄ¿Â¼ÏÂµÄÄÚÈİÉú³É·ÖÀà¡£±¾½Å±¾²¢Ã»ÓĞ³ä·Ö²âÊÔ£¬Ö»ÊÇ
-ÎªÁË¸øÀÏÆÅÌá¹©Ò»¸öÍêÃÀÀñÆ·µÄÒ»¸öhack£¬²»ÄÜ±£Ö¤ÔÚËùÓĞkindle touchÕı³£¹¤×÷£¬ÎÒ²»¶ÔÈÎºÎ
-·çÏÕ¸ºÔğ¡£
+è¿™ä¸ªæ‰©å±•ä¾èµ–äºyifanluçš„guilauncheræ’ä»¶ï¼Œå…ˆå®‰è£…https://github.com/downloads/yifanlu/
+KindleLauncher/kindle_launcher_1.0.zipï¼Œç„¶åæŠŠæœ¬å®‰è£…åŒ…è§£å‹åå¾—åˆ°çš„collectSyncç›®å½•
+æ‹·è´åˆ°kindleç›˜extensionsç›®å½•ä¸‹ï¼Œé‡å¯ï¼Œå°±ä¼šçœ‹åˆ°menu-launcherèœå•ä¸‹æœ‰æ–°çš„é€‰é¡¹"generate
+collections",é€‰ä¸­åå°±ä¼šæ ¹æ®æ‚¨çš„kindleç›®å½•ä¸‹çš„å†…å®¹ç”Ÿæˆåˆ†ç±»ã€‚
 
-Çë×¢Òâ£¬ÎªÁË±ÜÃâÖØ¸´Éú³É·ÖÀà£¬Éú³É·ÖÀàÖ®Ç°ÏÖÓĞ·ÖÀà¶¼»á±»É¾³ı£¡¸ù¾İdocumentsÄ¿Â¼ÏÂµÄÄÚÈİ£¬
-Ö»ÒªÄ³¸öÄ¿Â¼ÏÂÓĞÎÄ¼ş£¬¾Í»áÉú³ÉÏàÓ¦·ÖÀà£¬·ÖÀàÃûÓÉÄ¿Â¼ÃûÉú³É£¬ÀıÈç£º
+è¿™ä¸ªæ‰©å±•æœ¬è´¨ä¸Šæ˜¯ä¸€ä¸ªhackï¼Œä½œè€…å¯¹å¯èƒ½çš„é£é™©ä¸ä½œä»»ä½•æ‹…ä¿ã€‚
+
+ç”Ÿæˆåˆ†ç±»çš„è¿‡ç¨‹å¤§è‡´å¦‚ä¸‹ï¼šæ ¹æ®documentsç›®å½•ä¸‹çš„å†…å®¹ï¼Œåªè¦æŸä¸ªç›®å½•ä¸‹æœ‰æ–‡ä»¶ï¼Œå°±ä¼šç”Ÿæˆç›¸åº”åˆ†ç±»ï¼Œ
+åˆ†ç±»åç”±ç›®å½•åç”Ÿæˆï¼Œä¾‹å¦‚ï¼š
    a/b.txt
    a/c/d.txt
    a/c/e.txt
-»áÉú³É£º
-   a(1)   //·ÖÀàaÏÂÓĞÒ»¸öÎÄ¼ş
-   a-c(2) //·ÖÀàa-cÏÂÓĞÁ½¸öÎÄ¼ş
+ä¼šç”Ÿæˆï¼š
+   a(1)   //åˆ†ç±»aä¸‹æœ‰ä¸€ä¸ªæ–‡ä»¶
+   a-c(2) //åˆ†ç±»a-cä¸‹æœ‰ä¸¤ä¸ªæ–‡ä»¶
+
+å¦‚æœæœ‰å¾ˆå¤šä¹¦ï¼Œè¿™ä¸ªè¿‡ç¨‹å¯èƒ½ä¼šå¾ˆæ…¢ã€‚ä¸ºäº†å¤šå°‘ç»™ç‚¹è¿›åº¦æç¤ºï¼Œå®ƒä¼šå…ˆè¿›å…¥å±ä¿ï¼Œåœ¨å®Œæˆäº†å‘½ä»¤æ–‡ä»¶
+ï¼ˆ/mnt/us/extensions/collectionSync/commandsï¼‰çš„ç”Ÿæˆä¹‹åï¼Œå…³é—­å±ä¿ï¼Œå†è¿›è¡Œå®é™…çš„å·¥ä½œï¼ˆ
+å³commandsæ–‡ä»¶çš„åˆ é™¤åˆ†ç±»ã€æ’å…¥åˆ†ç±»ã€æ›´æ–°åˆ†ç±»å†…å®¹çš„å‘½ä»¤ï¼Œè¿™ä¸ªè¿‡ç¨‹ä½ åœ¨é¦–é¡µä¼šçœ‹åˆ°my itemsçš„
+æ•°é‡å’Œpageçš„æ•°é‡åœ¨å˜åŒ–ï¼Œä¸€èˆ¬æ˜¯å…ˆå¢åŠ å†å‡å°‘ï¼‰ï¼Œæ‰€æœ‰å·¥ä½œå®Œæˆåå†æ¬¡è¿›å…¥å±ä¿ã€‚
+
+å·²çŸ¥é™åˆ¶ï¼š
+  1, æ‰©å±•ç”¨ä¸­æ–‡çš„"ï¼"å­—ç¬¦æ¥åˆ†å‰²ç›®å½•å±‚æ¬¡ï¼Œå¦‚æœç›®å½•ä¸­æœ‰è¿™ä¸ªå­—ç¬¦ä¼šå¯¼è‡´ç”Ÿæˆå¤±è´¥ã€‚
+  2, æ‰©å±•ä¾èµ–äºkindleè‡ªèº«çš„æ–‡ä»¶æ‰«æå’Œæ•°æ®åº“æ“ä½œæ¥å£ï¼Œåœ¨å¯¼å…¥å¤§é‡ä¹¦çš„æ—¶å€™ï¼Œåº”è¯¥ç»™kindleè¶³å¤Ÿçš„
+æ—¶é—´æ‰«æä¹¦ç›®ï¼Œå®ŒæˆåŸºæœ¬çš„æ•°æ®åº“æ“ä½œï¼Œå¦åˆ™åœ¨ç”Ÿæˆåˆ†ç±»æ—¶æ‰©å±•çš„æ•°æ®åº“æ“ä½œå’Œç³»ç»Ÿçš„æ•°æ®åº“æ“ä½œå¯èƒ½
+å†²çªï¼Œå¯¼è‡´è¶…æ—¶å¤±è´¥ã€‚
 
 Fuxin Zhang
-2012/1/10
+2012/1/27
