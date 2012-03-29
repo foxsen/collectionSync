@@ -2,7 +2,6 @@
 
 ### This script tries to create collections from documents directory, it will erase any existing collections
 ### Use at your own risk. Fuxin Zhang
-
 clear_existing_collections() {
   delete_post_prefix='{"commands":[{"delete":{"uuid":"'
   delete_post_suffix='"}}],"type":"ChangeRequest","id":1}'
@@ -50,6 +49,9 @@ update_collection() {
       else
         member_data=\"$u\"
       fi
+    else
+      echo "Warning:$f is not in the Entries database, will be ignored!" >> ./log
+      echo "Warning:Either it is not in a format recognized by kindle, or you have not waited kindle to finish the scan? If so retry later." >> ./log
     fi
     echo $member_data > /tmp/member_data
   done 
@@ -76,16 +78,38 @@ create_collections() {
   done
 }
 
+cd /mnt/us/extensions/collectionSync
+rm -f ./commands
+rm -f ./log
+touch ./commands
+
 ### enter screensaver mode to tell user work start
 lipc-set-prop com.lab126.powerd preventScreenSaver 0
 lipc-set-prop com.lab126.powerd powerButton 1
 lipc-set-prop com.lab126.powerd preventScreenSaver 1
 
-cd /mnt/us/extensions/collectionSync
+scan_done=`lipc-get-prop com.lab126.scanner fullScanStatus`
+if [ $scan_done -ne 0 ] ; then
+  echo "Kindle scanner has not finished scanned all books, Waiting start at date" `date` >> ./log
+  lipc-probe -v com.lab126.scanner >> ./log
+fi
+times=0
+while [ $scan_done -ne 0 ] ; do
+  scan_done=`lipc-get-prop com.lab126.scanner fullScanStatus`
+  sleep 3
+  lipc-set-prop com.lab126.powerd preventScreenSaver 0
+  lipc-set-prop com.lab126.powerd powerButton 1
+  lipc-set-prop com.lab126.powerd preventScreenSaver 1
+  times=$((times+1))
+  if [ $times -gt 1000 ] ; then
+    echo "Wait for too long a time, quit..." >> ./log
+  fi
+done
+echo "Started at " `date` >> ./log
 
-rm -f ./commands
-touch ./commands
-
+### pause indexer
+lipc-set-prop com.lab126.indexer pauseIndexerMilliseconds 6000000
+sleep 1
 
 ### first of all, delete all existing collections
 clear_existing_collections 
@@ -99,7 +123,16 @@ lipc-set-prop com.lab126.powerd powerButton 1
 lipc-set-prop com.lab126.powerd preventScreenSaver 1
 
 /usr/java/bin/cvm PerformPostBatch
+if [ $? -ne 0 ]; then
+  echo "Something goes wrong, dump the log"
+  showlog >>  ./log
+else
+  echo "Successfully done." >> ./log
+fi
 #rm -f ./commands
+
+### let indexer continue
+lipc-set-prop com.lab126.indexer pauseIndexerMilliseconds 0
 
 ### enter screensaver mode to tell user work done
 lipc-set-prop com.lab126.powerd preventScreenSaver 0

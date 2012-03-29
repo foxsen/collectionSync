@@ -24,9 +24,10 @@ mode again to tell you all work is done.
 Known limits:
  1, It uses Chinese character '－' to seperate directory hierarchy, if your directories
 contains such character, generation will (partly) fail.
- 2, Kindle is slow at scanning books. After copying lots of books onto it, you should wait
-enough time for it to finish the generation of entries database items. Otherwise the script
-might fail due to database operation conflicts with system.
+ 2012/3/29 update: This is removed now, we will wait for the scanner to do its job(2, 
+Kindle is slow at scanning books. After copying lots of books onto it, you should wait 
+enough time for it to finish the generation of entries database items. Otherwise the 
+script might fail due to database operation conflicts with system.)
 
 Happy Hacking.
 
@@ -53,11 +54,33 @@ collections",选中后就会根据您的kindle目录下的内容生成分类。
 即commands文件的删除分类、插入分类、更新分类内容的命令，这个过程你在首页会看到my items的
 数量和page的数量在变化，一般是先增加再减少），所有工作完成后再次进入屏保。
 
+如果开始工作的时候kindle还没有完成扫描书目，它会等待，每三秒换一下屏保，以提示还在工作。
+
+2012/3/29: 为了方便查看问题，增加了一些调试信息输出，如果有任何问题，可以查看
+   extensions/collectionSync/目录的commands和log文件, commands是json命令，log是调试信息
+如果成功，log的输出应该类似：
+Started at  Thu Mar 29 15:53:29 UTC 2012
+Successfully done.
+
+如果开始的时候要等scanner，则类似这样：
+Kindle scanner has not finished scanned all books, Waiting start at date Thu Mar 29 15:54:24 UTC 2012
+        w       Int     doFullScan
+        rw      Str     logMask [0xffff0000]
+        rw      Str     logLevel        [Current log level=info
+(Possible levels: all, perf, debug[9-0], info, warn, error, crit, none)]
+        r       Int     fullScanStatus  [5]
+Started at  Thu Mar 29 15:54:39 UTC 2012
+Successfully done.
+
+如果有些书格式kindle不认识，还会有一些warning信息。
+
+如果由于某种原因失败了，会把系统的调试信息dump在log文件里。
+
 已知限制：
   1, 扩展用中文的"－"字符来分割目录层次，如果目录中有这个字符会导致生成失败。
-  2, 扩展依赖于kindle自身的文件扫描和数据库操作接口，在导入大量书的时候，应该给kindle足够的
-时间扫描书目，完成基本的数据库操作，否则在生成分类时扩展的数据库操作和系统的数据库操作可能
-冲突，导致超时失败。
+  2012/3/29, 这个应该已经修复了。(2, 扩展依赖于kindle自身的文件扫描和数据库操作接口，在导
+入大量书的时候，应该给kindle足够的时间扫描书目，完成基本的数据库操作，否则在生成分类时扩展
+的数据库操作和系统的数据库操作可能冲突，导致超时失败。)
 
 Fuxin Zhang
-2012/1/27
+2012/3/29
